@@ -205,8 +205,9 @@ class MainTest {
     @Test
     @DisplayName("Delete Actor")
     void delete() {
+        actorService.delete(actor.getId());
 
-        actorService.delete(actor);
+        verify(mockActorRepository, times(1)).deleteById(actor.getId());
 
     }
 
@@ -249,9 +250,10 @@ class MainTest {
     @Test
     @DisplayName("Delete movie")
     void deleteMovie() {
-        doNothing().when(mockMovieRepository).delete(any(Movie.class));
-        movieService.delete(movie);
-        verify(mockMovieRepository, times(1)).delete(movie);
+        Long movieId = movie.getId();
+        doNothing().when(mockMovieRepository).deleteById(any(Long.class));
+        movieService.delete(movieId);
+        verify(mockMovieRepository, times(1)).deleteById(movieId);
     }
 
 }

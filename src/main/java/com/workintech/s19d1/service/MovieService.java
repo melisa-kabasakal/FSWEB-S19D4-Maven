@@ -8,6 +8,5 @@ public interface MovieService {
     Movie save(Movie movie);
     Movie findById(Long id);
     List<Movie> findAll();
-    Movie update(Movie movie);
-    Movie delete(Long id);
+    void delete(Movie movie);
 }

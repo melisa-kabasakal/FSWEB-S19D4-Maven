@@ -1,11 +1,13 @@
 package com.workintech.s19d1.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +23,11 @@ public class Actor {
     private Long id;
 
     @Column(name="first_name")
+    @NotNull
     private String firstName;
 
     @Column(name="last_name")
+    @NotNull
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -33,20 +37,19 @@ public class Actor {
     @Column(name="birth_date")
     private LocalDate birthDate;
 
-    @ManyToMany(mappedBy = "actor")
-    private List<Movie> movie;
+    @ManyToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH,CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinTable(name = "movie_actor", schema = "fsweb",
+    joinColumns = @JoinColumn(name = "actor_id"),
+    inverseJoinColumns = @JoinColumn(name = "movie_id"))
 
-    public void setMovies(List<Movie> movie) {
-        this.movie = movie;
-    }
+    private List<Movie> movies;
 
-    public List<Movie> getMovies() {
-        return movie;
-    }
 
     public void addMovie(Movie movie) {
-        this.movie.add(movie);
-        movie.getActors().add(this);
+        if(movies == null){
+            movies = new ArrayList<>();
+        }
+        movies.add(movie);
     }
 
 

@@ -10,5 +10,5 @@ public interface ActorService {
     Actor findById(Long id);
     List<Actor> findAll();
     Actor update(Actor actor);
-    Actor delete (Long id);
+    void delete (Actor actor);
 }

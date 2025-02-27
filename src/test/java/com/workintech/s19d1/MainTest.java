@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
@@ -156,6 +157,7 @@ class MainTest {
     void actorRepositoryInstanceCheck() {
 
         assertTrue(mockActorRepository instanceof JpaRepository, "ActorRepository should be an instance of JpaRepository");
+
     }
 
     @Test
@@ -173,6 +175,7 @@ class MainTest {
         List<Actor> actors = actorService.findAll();
         assertEquals(actors.size(), 1);
     }
+
 
     @Test
     @DisplayName("Find Actor By Id - Success")
@@ -205,7 +208,7 @@ class MainTest {
     @Test
     @DisplayName("Delete Actor")
     void delete() {
-        actorService.delete(actor.getId());
+        actorService.delete(actor);
 
         verify(mockActorRepository, times(1)).deleteById(actor.getId());
 
@@ -252,7 +255,7 @@ class MainTest {
     void deleteMovie() {
         Long movieId = movie.getId();
         doNothing().when(mockMovieRepository).deleteById(any(Long.class));
-        movieService.delete(movieId);
+        movieService.delete(movie);
         verify(mockMovieRepository, times(1)).deleteById(movieId);
     }
 
